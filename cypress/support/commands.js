@@ -342,6 +342,31 @@ Cypress.Commands.add('deleteTask', (id_task, id_lesson) => {    // удален�
   })
 })
 
+Cypress.Commands.add('createBlockImage', (title, id_task, id_block) => {    // Создание задания
+  cy.request({ 
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl')+"/tasks"+Cypress.env(id_task)+"/block/image", 
+    failOnStatusCode: false,
+    headers: { 
+        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
+      },
+    body:{
+      "src": Cypress.env('imageBlock'),
+      "title": title,
+      "isCopyrightHolder": true,
+      "copyrightUrl": Cypress.env('imageBlock'),
+      "isAuthor": true,
+      "author": "true",
+      "position": 5,
+      "isVisible": true
+    }
+  }).as('createBlockImage')
+  .then((response) =>{
+    expect(response.status).to.eq(201)
+    Cypress.env(id_block, response.body.id)
+  })
+})
+
 Cypress.Commands.add('uploadFile', { prevSubject: true }, (subject, fixturePath, mimeType) => {
   cy.fixture(fixturePath, 'base64').then(content => {
     Cypress.Blob.base64StringToBlob(content, mimeType).then((blob) => {

@@ -21,6 +21,7 @@ module.exports = defineConfig({
     addStudentMail: "student@fexbox.org",
     tempEmailTeacher: "test_teacher@fexbox.org",
     nameImage: 'Im',
+    imageBlock: 'https://99px.ru/sstorage/56/2021/11/mid_343333_176671.jpg',
 
 
     demoqaUrl: 'https://demoqa.com/',

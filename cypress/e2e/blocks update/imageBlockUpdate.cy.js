@@ -1,4 +1,4 @@
-describe('Image block testing', () => {
+describe('Image block update testing', () => {
 
     before('Очищаю группы и предметы',() =>{
         cy.login()
@@ -13,12 +13,13 @@ describe('Image block testing', () => {
         cy.createGroup('testGroup','id_subject','id_group')
         cy.createLesson('testLesson','id_group','id_lesson')
         cy.createTask('testTask', 'id_lesson','id_task')
+        cy.createBlockImage('testBlock','id_task, id_block')
 
         
-        cy.intercept({
-            method: 'POST',
-            url: '**/block/image**',
-        }).as('matchedCreateImage')                           
+        // cy.intercept({
+        //     method: 'POST',
+        //     url: '**/block/image**',
+        // }).as('matchedCreateImage')                           
 
         cy.intercept({
             method: 'GET',
@@ -49,14 +50,15 @@ describe('Image block testing', () => {
         .click()
         .wait(500)
 
-        cy.contains('Для создания блока добавьте материал из меню слева или нажмите на кнопку')
+        cy.contains('testBlock')
+        .parent()
+        .parent()
+        .find('[data-testid="EditIcon"]')
         .click()
         .wait(500)
-
-        cy.contains('Изображение')
-        .click()
-        .wait(500)
-
+        
+       
+        
         // cy.wait('@matchedUrlCount').then(({response}) =>{
         //     expect(response.statusCode).to.eq(200)
         // })*/
@@ -70,7 +72,7 @@ describe('Image block testing', () => {
     })
 
 
-    it.skip('Основной сценарий - создание блока изображения', () => {
+    it('Основной сценарий - создание блока изображения', () => {
    
         cy.get('input[id="icon-button-file"]')
         .attachFile('testImage.jpg')
