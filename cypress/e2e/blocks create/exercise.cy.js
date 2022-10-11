@@ -391,7 +391,7 @@ describe('Exercise block testing', () => {
         cy.contains('ДАЛЕЕ')
             .click()
 
-        cy.wait(1000)
+        cy.wait(10000)
 
         cy.contains('Допустимые форматы фото: png/jpg/jpeg')
             .should('exist')
