@@ -342,10 +342,10 @@ Cypress.Commands.add('deleteTask', (id_task, id_lesson) => {    // удален�
   })
 })
 
-Cypress.Commands.add('createBlockImage', (title, id_task, id_block) => {    // Создание задания
+Cypress.Commands.add('createBlockImage', (title, id_task, id_block) => {    // Создание блока изображения
   cy.request({ 
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/tasks"+Cypress.env(id_task)+"/block/image", 
+    url: Cypress.env('newPlatformApiUrl')+"/tasks/"+Cypress.env(id_task)+"/block/image", 
     failOnStatusCode: false,
     headers: { 
         'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
@@ -357,10 +357,117 @@ Cypress.Commands.add('createBlockImage', (title, id_task, id_block) => {    // �
       "copyrightUrl": Cypress.env('imageBlock'),
       "isAuthor": true,
       "author": "true",
-      "position": 5,
+      "position": 3,
       "isVisible": true
     }
   }).as('createBlockImage')
+  .then((response) =>{
+    expect(response.status).to.eq(201)
+    Cypress.env(id_block, response.body.id)
+  })
+})
+
+Cypress.Commands.add('createBlockVideo', (title, id_task, id_block) => {    // Создание видео блока
+  cy.request({ 
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl')+"/tasks/"+Cypress.env(id_task)+"/block/video", 
+    failOnStatusCode: false,
+    headers: { 
+        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
+      },
+    body:{
+      "transcript": "transcript",
+      "copyrightUrl": Cypress.env('videoBlock'),
+      "src": Cypress.env('videoBlock'),
+      "title": title,
+      "isCopyrightHolder": true,
+      "isAuthor": true,
+      "author": "true",
+      "preview": 5.532,
+      "position": 3,
+      "isVisible": true,
+      "accessTranscript": true,
+      "fragmentation": [
+        {
+          "start": 1,
+          "end": 2
+        },
+        {
+          "start": 1,
+          "end": 2
+        }
+      ]
+    }
+  }).as('createBlockVideo')
+  .then((response) =>{
+    expect(response.status).to.eq(201)
+    Cypress.env(id_block, response.body.id)
+  })
+})
+
+Cypress.Commands.add('createBlockText', (title, id_task, id_block) => {    // Создание текстового блока
+  cy.request({ 
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl')+"/tasks/"+Cypress.env(id_task)+"/block/text", 
+    failOnStatusCode: false,
+    headers: { 
+        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
+      },
+    body:{
+      "text": Cypress.env('textBlock'),
+      "title": title,
+      "isCopyrightHolder": true,
+      "isAuthor": true,
+      "position": 3,
+      "isVisible": true
+    }
+  }).as('createBlockText')
+  .then((response) =>{
+    expect(response.status).to.eq(201)
+    Cypress.env(id_block, response.body.id)
+  })
+})
+
+Cypress.Commands.add('createSlider', (title, id_task) => {    // Создание слайдера
+  cy.request({ 
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl')+"/block/slider", 
+    failOnStatusCode: false,
+    headers: { 
+        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
+      },
+    body:{
+      "title": title,
+      "task": "task one",
+      "duration": 60,
+      "text": "text one"
+    }
+  }).as('createTask')
+  .then((response) =>{
+    expect(response.status).to.eq(201)
+    Cypress.env(id_task, response.body.id)
+  })
+})
+
+Cypress.Commands.add('createExercise', (title, id_task, id_block) => {    // Создание упражнения
+  cy.request({ 
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl')+"/tasks/"+Cypress.env(id_task)+"/block/exercise", 
+    failOnStatusCode: false,
+    headers: { 
+        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
+      },
+    body:{
+      "text": "text one",
+      "exerciseType": "singleChoice",
+      "sliderId": "61fe2e30-0164-4205-a21c-20b1950a7328",
+      "mediaId": "61fe2e30-0164-4205-a21c-20b1950a7328",
+      "hint": "hello is one",
+      "duration": 23,
+      "position": 5,
+      "isVisible": true
+    }
+  }).as('createBlockText')
   .then((response) =>{
     expect(response.status).to.eq(201)
     Cypress.env(id_block, response.body.id)

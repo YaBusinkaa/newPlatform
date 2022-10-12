@@ -22,6 +22,9 @@ module.exports = defineConfig({
     tempEmailTeacher: "test_teacher@fexbox.org",
     nameImage: 'Im',
     imageBlock: 'https://99px.ru/sstorage/56/2021/11/mid_343333_176671.jpg',
+    audioBlock: 'https://samplelib.com/lib/preview/mp3/sample-3s.mp3',
+    videoBlock: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
+    textBlock: 'testtetstest',
 
 
     demoqaUrl: 'https://demoqa.com/',

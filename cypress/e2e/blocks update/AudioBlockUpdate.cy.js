@@ -1,4 +1,4 @@
-describe('Image block update testing', () => {
+describe('Audio block update testing', () => {
 
     before('Очищаю группы и предметы',() =>{
         cy.login()
@@ -13,12 +13,12 @@ describe('Image block update testing', () => {
         cy.createGroup('testGroup','id_subject','id_group')
         cy.createLesson('testLesson','id_group','id_lesson')
         cy.createTask('testTask', 'id_lesson','id_task')
-        cy.createBlockImage('testBlock','id_task', 'id_block')
+        cy.createBlockAudio('testBlock','id_task', 'id_block')
 
         
         cy.intercept({
             method: 'PUT',
-            url: '**/block/**',
+            url: '**/block/id_block**',
         }).as('matchedUpdateImage')                           
 
         cy.intercept({
@@ -28,7 +28,7 @@ describe('Image block update testing', () => {
 
         cy.intercept({
             method: 'POST',
-            url: 'https://uploader.ipst-dev.com/image/upload',
+            url: 'https://uploader.ipst-dev.com/audio/upload',
         }).as('matchedUploader')  
 
         cy.visitGroup('id_subject','id_group')
@@ -53,6 +53,7 @@ describe('Image block update testing', () => {
         cy.contains('testBlock')
         .parent()
         .parent()
+        .parent()
         .find('[data-testid="EditIcon"]')
         .click()
         .wait(500)
@@ -72,19 +73,23 @@ describe('Image block update testing', () => {
     })
 
 
-    it('Основной сценарий - редактирование блока изображения', () => {
+    it.skip('Основной сценарий - редактирование блока аудио', () => {
    
-        cy.contains('Загрузить другое изображение')
+        cy.contains('Загрузить другое аудио')
         .click()
 
         cy.get('input[id="icon-button-file"]')
-            .attachFile('testImage.jpg')
-
+            .attachFile('testAudio.mp3')
+        cy.wait(500)
         cy.wait('@matchedUploader')
 
-        cy.get('input[name="imageName"]')
+        cy.get('input[name="audioName"]')
             .clear()
-            .type(Cypress.env('nameImage'))
+            .type('test')
+
+        cy.get('textarea[name="audioTranscript"]')
+            .clear()
+            .type('aa')
 
         cy.contains('Создано на Новой Платформе')
             .click()
@@ -92,7 +97,7 @@ describe('Image block update testing', () => {
         cy.contains('Я являюсь автором')
             .click()
 
-        cy.get('textarea[name="imageSource"]')
+        cy.get('textarea[name="audioSource"]')
             .clear()
             .type('аа')
 
@@ -103,19 +108,22 @@ describe('Image block update testing', () => {
         cy.get('button[type="submit"]')
             .click()
 
-        cy.wait('@matchedUpdateImage').then(({response}) =>{
-            expect(response.statusCode).to.eq(200)
-        })
-        cy.contains('Ваше изображение '+Cypress.env('nameImage')+' успешно изменено')
+        // cy.wait('@matchedUpdateImage').then(({response}) =>{
+        //     expect(response.statusCode).to.eq(200)
+        // })
+        cy.contains('Ваше аудио test успешно изменено')
             .should('exist')
     })
 
     it.skip('Альтернативный сценарий - пустые поля', () => {
         
-        cy.contains('Загрузить другое изображение')
+        cy.contains('Загрузить другое аудио')
         .click()
 
-        cy.get('input[name="imageName"]')
+        cy.get('input[name="audioName"]')
+            .clear()
+
+        cy.get('textarea[name="audioTranscript"]')
             .clear()
 
         cy.contains('Создано на Новой Платформе')
@@ -124,7 +132,7 @@ describe('Image block update testing', () => {
         cy.contains('Я являюсь автором')
             .click()
 
-        cy.get('textarea[name="imageSource"]')
+        cy.get('textarea[name="audioSource"]')
             .clear()
 
         cy.get('textarea[name="authorName"]')
@@ -133,50 +141,50 @@ describe('Image block update testing', () => {
         cy.get('button[type="submit"]')
             .click()
 
-        cy.contains('Загрузите медиафайл')
-        .should('exist')
+        cy.contains('Загрузите аудиофайл')
+            .should('exist')
 
-        cy.contains('Введите название изображения')
-        .should('exist')
+        cy.contains('Поле "Название аудио" не должно быть пустым')
+            .should('exist')
 
         cy.contains('Необходимо указать источник заимствования')
-        .should('exist')
+            .should('exist')
 
         cy.contains('Необходимо указать имя автора')
-        .should('exist')
+            .should('exist')
     })
 
-    it.skip('Альтернативный сценарий - неверный формат изображения', () => {
+    it.skip('Альтернативный сценарий - неверный формат аудио', () => {
         
-        cy.contains('Загрузить другое изображение')
+        cy.contains('Загрузить другое аудио')
         .click()
 
         cy.get('input[id="icon-button-file"]')
-            .attachFile('testAudio.mp3')
+            .attachFile('testImage.jpg')
 
         //cy.wait('@matchedUploader')
 
-        cy.contains('Допустимые форматы фото: png/jpg')
+        cy.contains('Допустимые форматы аудио: MP3')
         .should('exist')
 
     })
 
     it.skip('Альтернативный сценарий - размер файла превышает допустимый', () => {
         
-        cy.contains('Загрузить другое изображение')
+        cy.contains('Загрузить другое аудио')
         .click()
 
         cy.get('input[id="icon-button-file"]')
-        .attachFile('bigImage.png')
+        .attachFile('bigAudio.mp3')
         // cy.wait('@matchedUploader')
 
-        cy.contains('Размер фото превышает максимально допустимый объем равный 5 Мб')
+        cy.contains('Размер аудио превышает максимально допустимый объем равный 10 Мб')
         .should('exist')
     })
 
     it.skip('Альтернативный сценарий - минимальное количество символов текстовых полей', () => {
 
-        cy.get('input[name="imageName"]')
+        cy.get('input[name="audioName"]')
             .clear()
             .type('а')
 
@@ -186,7 +194,7 @@ describe('Image block update testing', () => {
         cy.contains('Я являюсь автором')
             .click()
 
-        cy.get('textarea[name="imageSource"]')
+        cy.get('textarea[name="audioSource"]')
             .clear()
             .type('а')
 
@@ -204,19 +212,24 @@ describe('Image block update testing', () => {
             .should('exist')
 
     })
+
     it.skip('Альтернативный сценарий - максимальное количество символов текстовых полей', () => {
 
-        cy.get('input[name="imageName"]')
+        cy.get('input[name="audioName"]')
             .clear()
             .type('testtesttesttesttesttesttesttesttesttesttesttestеtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestte')
         
+        cy.get('textarea[name="audioTranscript"]')
+            .clear()
+            .type('testtesttesttesttesttesttesttesttesttesttesttesttestеtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttetesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestte')
+
         cy.contains('Создано на Новой Платформе')
             .click()
 
         cy.contains('Я являюсь автором')
             .click()
 
-        cy.get('textarea[name="imageSource"]')
+        cy.get('textarea[name="audioSource"]')
             .clear()
             .type('testtesttesttesttesttesttesttesttesttesttesttesttestеtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttetesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestte')
 
@@ -231,6 +244,23 @@ describe('Image block update testing', () => {
             .should('exist')
 
         cy.contains('Введите не менее 2 и не более 500 символов')
+            .should('exist')
+
+    })
+    
+    it.skip('Альтернативный сценарий - валидация текстового поля "имя автора" ', () => {
+
+        cy.contains('Я являюсь автором')
+            .click()
+
+        cy.get('textarea[name="authorName"]')
+            .clear()
+            .type('nз.)&')
+
+        cy.get('button[type="submit"]')
+            .click()
+
+        cy.contains('Используются некорректные символы')
             .should('exist')
 
     })
