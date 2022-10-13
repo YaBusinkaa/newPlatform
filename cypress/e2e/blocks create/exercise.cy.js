@@ -502,15 +502,6 @@ describe('Exercise block testing', () => {
         //     expect(response.statusCode).to.eq(200)
         // })
 
-        cy.get('input[name="imageName"]')
-            .type('aa')
-
-        cy.get('textarea[name="imageSource"]')
-            .type('aa')
-
-        cy.get('textarea[name="authorName"]')
-            .type('аа')
-
         cy.contains('ДАЛЕЕ')
             .click()
 
@@ -535,19 +526,6 @@ describe('Exercise block testing', () => {
         
         cy.get('input[id="icon-button-file"]')
             .attachFile('bigAudio.mp3')
-
-        // cy.wait('@matchedUploaderImage').then(({response}) => {
-        //     expect(response.statusCode).to.eq(200)
-        // })
-
-        cy.get('input[name="audioName"]')
-            .type('aa')
-
-        cy.get('textarea[name="audioSource"]')
-            .type('aa')
-
-        cy.get('textarea[name="authorName"]')
-            .type('аа')
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -574,19 +552,6 @@ describe('Exercise block testing', () => {
         
         cy.get('input[id="icon-button-file"]')
             .attachFile('bigVideo.mp4')
-
-        // cy.wait('@matchedUploaderImage').then(({response}) => {
-        //     expect(response.statusCode).to.eq(200)
-        // })
-
-        cy.get('input[name="videoName"]')
-            .type('aa')
-
-        cy.get('textarea[name="videoSource"]')
-            .type('aa')
-
-        cy.get('textarea[name="authorName"]')
-            .type('аа')
 
         cy.contains('ДАЛЕЕ')
             .click()
