@@ -202,7 +202,7 @@ Cypress.Commands.add('getUser', (email) => {    // получение всех �
 Cypress.Commands.add('createStudent', (email, id_group) => {    // создание студента
   cy.request({ 
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/groups/user", 
+    url: Cypress.env('newPlatformApiUrl')+"/groups/user",
     failOnStatusCode: false,
     body:{
       "userEmail": email,
@@ -214,7 +214,7 @@ Cypress.Commands.add('createStudent', (email, id_group) => {    // создан�
   }).as('createStudent')
   .then((response) =>{
     expect(response.status).to.eq(201)
-    Cypress.env('id_user', response.body.id)
+    Cypress.env('id_student', response.body.id)
   })
 })
 
@@ -312,20 +312,41 @@ Cypress.Commands.add('deleteLesson', (id_lesson) => {    // удаление у�
 Cypress.Commands.add('createTask', (title, id_lesson, id_task) => {    // Создание задания
   cy.request({ 
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/lessons/"+Cypress.env(id_lesson)+"/task", 
+    url: Cypress.env('newPlatformApiUrl')+"/tasks",
     failOnStatusCode: false,
     headers: { 
         'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
       },
     body:{
-      title: title,
-      type: "classwork"
+      "type": "classwork",
+      "isVisible": true,
+      "title": title,
+      "studentId":null,
+      "lessonId": Cypress.env(id_lesson),
     }
   }).as('createTask')
   .then((response) =>{
     expect(response.status).to.eq(201)
     Cypress.env(id_task, response.body.id)
   })
+})
+Cypress.Commands.add('createHomeworkTask', (title, id_lesson, id_task) => {    // Создание домашнего задания
+  cy.request({
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl')+"/lessons/"+Cypress.env(id_lesson)+"/task",
+    failOnStatusCode: false,
+    headers: {
+      'Authorization': 'Bearer '+ Cypress.env('accessToken'),
+    },
+    body:{
+      title: title,
+      type: "homework"
+    }
+  }).as('createTask')
+      .then((response) =>{
+        expect(response.status).to.eq(201)
+        Cypress.env(id_task, response.body.id)
+      })
 })
 
 Cypress.Commands.add('deleteTask', (id_task, id_lesson) => {    // удаление задания
