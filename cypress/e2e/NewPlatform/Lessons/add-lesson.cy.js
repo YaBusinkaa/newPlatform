@@ -27,7 +27,7 @@ describe('Add lesson', () => {
             url: '**/lessons**'
         }).as('matchedCreateLessons')                            
 
-        cy.visitGroup('id_group')
+        cy.visitGroup('id_subject','id_group')
         cy.wait('@matchedAuth')
         cy.wait(1000)
         cy.get('svg[data-testid="AddCircleIcon"]')

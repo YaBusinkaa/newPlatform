@@ -27,7 +27,7 @@ describe('Add Task', () => {
             url: '**/task**'
         }).as('matchedCreateTask')                            
 
-        cy.visitGroup('id_group').then(({response})=> {
+        cy.visitGroup('id_subject','id_group').then(({response})=> {
             expect(response.statusCode).to.eq(200)
         })
         cy.wait('@matchedAuth')

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9158fcc1-9df4-403f-9b25-728283ae04a4" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2CsvAXnEOyJ2NcAFfoR2K39XRi6" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/AnyaYk/cypress/cypress/e2e/NewPlatform/Tasks&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\AnyaYk\cypress\cypress\e2e\NewPlatform\Tasks" />
+      <recent name="C:\Users\AnyaYk\cypress\cypress\e2e\blocks" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\AnyaYk\cypress" />
+      <recent name="C:\Users\AnyaYk\cypress\e2e\blocks" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9158fcc1-9df4-403f-9b25-728283ae04a4" name="Changes" comment="" />
+      <created>1659603966469</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1659603966469</updated>
+      <workItem from="1659603968514" duration="1156000" />
+      <workItem from="1659874947803" duration="4295000" />
+      <workItem from="1659951842943" duration="1489000" />
+      <workItem from="1660549657027" duration="153000" />
+      <workItem from="1661167860308" duration="1773000" />
+      <workItem from="1662619958701" duration="23000" />
+      <workItem from="1665126498734" duration="146000" />
+      <workItem from="1665126648582" duration="3378000" />
+      <workItem from="1665136183714" duration="2652000" />
+      <workItem from="1665404005975" duration="572000" />
+      <workItem from="1665720364132" duration="6053000" />
+      <workItem from="1665977846165" duration="7587000" />
+      <workItem from="1665989809959" duration="9178000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
