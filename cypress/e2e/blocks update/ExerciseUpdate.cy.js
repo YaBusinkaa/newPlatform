@@ -18,7 +18,12 @@ describe('Exercise update testing', () => {
         cy.intercept({
             method: 'POST',
             url: '**/block/exercise',
-        }).as('matchedUpdateExercise')                           
+        }).as('matchedCreateExercise')
+
+        cy.intercept({
+            method: 'PUT',
+            url: '**/exercises/**',
+        }).as('matchedUpdateExercise')
 
         cy.intercept({
             method: 'GET',
@@ -118,18 +123,17 @@ describe('Exercise update testing', () => {
         cy.contains('СОХРАНИТЬ')
             .click()
             
-        cy.wait('@matchedUpdateExercise')
+        cy.wait('@matchedCreateExercise')
 
         cy.wait(1000)
 
-        cy.contains('Упражнение test успешно создано')
+        cy.contains('Упражнение testExercise успешно создано')
             .should('exist')
 
-        cy.contains('testExercise')
-            .parent()
-            .parent()
-            .parent()
-            .find('[data-testid="EditIcon"]')
+        //cy.contains('testExercise')
+
+            cy.get('[data-testid="EditIcon"]')
+                .eq(3)
             .click()
             .wait(500)
         
@@ -142,7 +146,7 @@ describe('Exercise update testing', () => {
     })
 
 
-    it('Основной сценарий - редактирование упражнения (обновление фото)', () => {
+    it.skip('Основной сценарий - редактирование упражнения (обновление фото)', () => {
 
         //добавление общей информации
         cy.get('input[name="title"]')
@@ -204,11 +208,7 @@ describe('Exercise update testing', () => {
             .eq(0)
             .type('te')
 
-        cy.contains('добавить')
-            .click()
-
         cy.get('input[name="answer"]')
-            .clear()
             .eq(1)
             .type('te')
 
@@ -224,7 +224,7 @@ describe('Exercise update testing', () => {
 
         cy.wait(1000)
 
-        cy.contains('Упражнение test успешно изменено')
+        cy.contains('Упражнение te успешно изменено')
             .should('exist')
         
     })
@@ -297,23 +297,6 @@ describe('Exercise update testing', () => {
         cy.contains('Загрузить видео')
             .click()
 
-        cy.get('input[name="videoName"]')
-            .clear()
-
-        cy.get('textarea[name="videoTranscript"]')
-            .clear()
-
-        cy.contains('Создано на Новой Платформе')
-            .click()
-
-        cy.contains('Я являюсь автором')
-            .click()
-
-        cy.get('textarea[name="videoSource"]')
-            .clear()
-
-        cy.get('textarea[name="authorName"]')
-            .clear()
         cy.contains('ДАЛЕЕ')
             .click()
 
@@ -336,23 +319,6 @@ describe('Exercise update testing', () => {
         cy.contains('ДАЛЕЕ')
             .click()
 
-        cy.get('input[name="audioName"]')
-            .clear()
-
-        cy.get('textarea[name="audioTranscript"]')
-            .clear()
-
-        cy.contains('Создано на Новой Платформе')
-            .click()
-
-        cy.contains('Я являюсь автором')
-            .click()
-
-        cy.get('textarea[name="audioSource"]')
-            .clear()
-
-        cy.get('textarea[name="authorName"]')
-            .clear()
         cy.contains('Загрузить аудио')
             .click()
 
@@ -411,6 +377,9 @@ describe('Exercise update testing', () => {
         cy.contains('ДАЛЕЕ')
             .click()
 
+        cy.contains('ДАЛЕЕ')
+            .click()
+
         cy.get('input[name="answer"]')
             .eq(0)
             .clear()
@@ -443,10 +412,6 @@ describe('Exercise update testing', () => {
         cy.get('input[type=checkbox]')
             .eq(0)
             .click()
-        
-        cy.get('input[type=checkbox]')
-            .eq(1)
-            .click()
 
         cy.contains('СОХРАНИТЬ')
             .click()
@@ -467,10 +432,6 @@ describe('Exercise update testing', () => {
 
         cy.get('input[type=checkbox]')
             .eq(0)
-            .click()
-        
-        cy.get('input[type=checkbox]')
-            .eq(1)
             .click()
 
         cy.contains('СОХРАНИТЬ')
@@ -494,9 +455,6 @@ describe('Exercise update testing', () => {
         cy.contains('Множественный выбор')
             .click()
 
-        cy.contains('добавить')
-            .click()
-
         cy.get('input[type=checkbox]')
             .eq(1)
             .click()
@@ -506,7 +464,7 @@ describe('Exercise update testing', () => {
 
         cy.wait(1000)
 
-        cy.contains('Должно быть заполнено хотя бы одно поле и выбран верный ответ')
+        cy.contains('Упражнение testExercise успешно изменено')
             .should('exist')
 
     })
@@ -518,7 +476,15 @@ describe('Exercise update testing', () => {
 
         cy.contains('ДАЛЕЕ')
             .click()
-        
+
+        cy.contains('Добавьте варианты ответа')
+            .parent()
+            .parent()
+            .find('svg[data-testid="DeleteIcon"]')
+            .eq(1)
+            .click()
+            .wait(1500)
+
         cy.contains('СОХРАНИТЬ')
             .click()
 
@@ -543,10 +509,13 @@ describe('Exercise update testing', () => {
         cy.contains('Множественный выбор')
             .click()
 
-        cy.find('[data-testid="EditIcon"]')
+        cy.contains('Добавьте варианты ответа')
+            .parent()
+            .parent()
+            .find('svg[data-testid="DeleteIcon"]')
             .eq(1)
             .click()
-            .wait(500)
+            .wait(1500)
 
         cy.contains('СОХРАНИТЬ')
             .click()
@@ -562,7 +531,8 @@ describe('Exercise update testing', () => {
         cy.contains('ДАЛЕЕ')
             .click()
 
-        cy.contains('Загрузить новое изображение')
+        cy.contains('Загрузить другое изображение')
+            .click()
 
         cy.get('input[id="icon-button-file"]')
             .attachFile('testAudio.mp3')
@@ -575,19 +545,26 @@ describe('Exercise update testing', () => {
             .clear()
             .type('a')
 
+        cy.contains('Создано на Новой Платформе')
+            .click()
+
+        cy.contains('Я являюсь автором')
+            .click()
+
         cy.get('textarea[name="imageSource"]')
             .clear()
             .type('a')
 
         cy.get('textarea[name="authorName"]')
+            .clear()
             .type('а')
 
         cy.contains('ДАЛЕЕ')
             .click()
 
-        cy.wait(10000)
+        cy.wait(1000)
 
-        cy.contains('Допустимые форматы фото: png/jpg/jpeg')
+        cy.contains('Допустимые форматы фото: png/jpg')
             .should('exist')
 
         cy.contains('Введите не менее 2 и не более 250 символов')
@@ -601,7 +578,7 @@ describe('Exercise update testing', () => {
 
     })
 
-    it.skip('(добавление медиафайла) - неверный формат аудиофайла', () => {
+    it.skip('(добавление медиафайла) - минимальное количество символов, неверный формат аудиофайла', () => {
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -617,16 +594,13 @@ describe('Exercise update testing', () => {
         // })
 
         cy.get('input[name="audioName"]')
-        .clear()
         .type('a')
 
         cy.get('textarea[name="audioSource"]')
-        .clear()
-        .type('a')
+            .type('a')
 
         cy.get('textarea[name="authorName"]')
-        .clear()
-        .type('a')
+            .type('а')
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -638,7 +612,7 @@ describe('Exercise update testing', () => {
 
     })
 
-    it.skip('(добавление медиафайла) - неверный формат видеофайла', () => {
+    it.skip('(добавление медиафайла) - минимальное количество символов, неверный формат видеофайла', () => {
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -654,16 +628,13 @@ describe('Exercise update testing', () => {
         // })
 
         cy.get('input[name="videoName"]')
-        .clear()
         .type('a')
 
         cy.get('textarea[name="videoSource"]')
-        .clear()
-        .type('a')
+            .type('a')
 
         cy.get('textarea[name="authorName"]')
-        .clear()
-        .type('a')
+            .type('а')
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -675,9 +646,12 @@ describe('Exercise update testing', () => {
 
     })
 
-    it.skip('(добавление медиафайла) - недопустимый размер медиафайла', () => {
+    it('(добавление медиафайла) - недопустимый размер медиафайла', () => {
 
         cy.contains('ДАЛЕЕ')
+            .click()
+
+        cy.contains('Загрузить другое изображение')
             .click()
 
         cy.get('input[id="icon-button-file"]')
