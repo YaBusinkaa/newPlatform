@@ -66,14 +66,14 @@ describe('Add group', () => {
 
     it('Максимальное кол-во символов', () => {
         cy.get('input[name="newSubject"]')
-        .type('траегомаевтраегомаевтраегомаево')
-        .should('have.value', 'траегомаевтраегомаевтраегомаево')
+        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ')
+        .should('have.value', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ')
 
         cy.get('button')
         .contains('Добавить предмет')
         .click()
     
-        cy.contains('Введите символы в промежутке от 1 до 30')
+        cy.contains('Введите символы в промежутке от 1 до 250 символов')
         .should('exist')
     })
 

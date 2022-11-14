@@ -330,6 +330,7 @@ Cypress.Commands.add('createTask', (title, id_lesson, id_task) => {    // Соз
     Cypress.env(id_task, response.body.id)
   })
 })
+
 Cypress.Commands.add('createHomeworkTask', (title, id_lesson, id_task) => {    // Создание домашнего задания
   cy.request({
     method: 'POST',
@@ -347,6 +348,87 @@ Cypress.Commands.add('createHomeworkTask', (title, id_lesson, id_task) => {    /
         expect(response.status).to.eq(201)
         Cypress.env(id_task, response.body.id)
       })
+})
+
+Cypress.Commands.add('createParentFolder', ( id_parentFolder) => {    // Создание папки
+  cy.request({ 
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl')+"/folders",
+    failOnStatusCode: false,
+    headers: { 
+        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
+      },
+    body:{
+        "title": "ParentFolder"
+    }
+  }).as('createParentFolder')
+  .then((response) =>{
+    expect(response.status).to.eq(201)
+    Cypress.env(id_parentFolder, response.body.id)
+  })
+})
+
+Cypress.Commands.add('deleteParentFolder', (id_parentFolder) => {    // Удаление папки
+  cy.request({ 
+    method: 'DELETE',
+    url: Cypress.env('newPlatformApiUrl')+"/folders/"+Cypress.env(id_parentFolder), 
+    failOnStatusCode: false,
+    headers: { 
+        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
+      },
+  }).as('deleteParentFolder')
+  .then((response) =>{
+    expect(response.status).to.eq(200)
+  })
+})
+
+Cypress.Commands.add('clickDeleteFolders', () => {
+
+  cy.contains('Создание папки')
+  .parents('div[role="dialog"]')
+  .find('svg[data-testid="CloseIcon"]')
+  .click()
+
+  cy.get('p')
+        .contains('Папка 2')
+        .click()
+        cy.wait(1000)
+
+  cy.contains('fo')
+  .parent()
+  .parent()
+  .find('svg[data-testid="MoreVertIcon"]')
+  .click()
+  
+  cy.get('ul>li:last-child')
+  .find('Удалить папку')
+  .click()
+
+  cy.contains('Удалить папку')
+  .click()
+
+  cy.wait('@matchedDeleteSubject').then(({response}) =>{
+      expect(response.statusCode).to.eq(200)
+  })
+  
+  
+
+  cy.contains('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut ')
+  .parent()
+  .parent()
+  .find('svg[data-testid="MoreVertIcon"]')
+  .click()
+  
+  cy.get('ul[role="menu"]')
+  .find('Удалить папку')
+  .click()
+
+  cy.contains('Удалить папку')
+  .click()
+
+  cy.wait('@matchedDeleteSubject').then(({response}) =>{
+      expect(response.statusCode).to.eq(200)
+  })
 })
 
 Cypress.Commands.add('deleteTask', (id_task, id_lesson) => {    // удаление задания
