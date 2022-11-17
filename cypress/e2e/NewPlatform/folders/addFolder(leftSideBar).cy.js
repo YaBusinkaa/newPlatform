@@ -36,7 +36,7 @@ describe('Add folder', () => {
     })
     
 
-    it.skip('Основной сценарий - 2 символа', () => {
+    it('Основной сценарий - 2 символа', () => {
         
         cy.get('input[name="folderTitle"]')
         .type('fo')
@@ -55,7 +55,7 @@ describe('Add folder', () => {
         
     })
 
-    it.skip('Альтернативный сценарий - 100 символов', () => {
+    it('Альтернативный сценарий - 100 символов', () => {
         
         cy.get('input[name="folderTitle"]')
         .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut')
@@ -73,7 +73,7 @@ describe('Add folder', () => {
         .should('exist')
     })
 
-    it.skip('Пустые поля', () => {
+    it('Пустые поля', () => {
 
         cy.get('button')
         .contains('Создать папку')
@@ -83,7 +83,7 @@ describe('Add folder', () => {
         .should('exist')
     })
 
-    it.skip('Максимальное кол-во символов', () => {
+    it('Максимальное кол-во символов', () => {
         cy.get('input[name="folderTitle"]')
         .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut ')
         .should('have.value', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut ')
@@ -96,7 +96,7 @@ describe('Add folder', () => {
         .should('exist')
     })
 
-    it('Повторяющееся название урока', () => {
+    it('Повторяющееся название папки', () => {
         // cy.get('input[name="folderTitle"]')
         // .type('fo')
         // .should('have.value', 'fo')
@@ -107,51 +107,10 @@ describe('Add folder', () => {
     
         // cy.contains('Данное название папки уже имеется')
         // .should('exist')
-
-
-
-
-        // cy.contains('Создание папки')
-        // .parents('div[role="dialog"]')
-        // .find('svg[data-testid="CloseIcon"]')
-        // .click()
-
-        // cy.contains('fo')
-        // .parent()
-        // .parent()
-        // .find('svg[data-testid="MoreVertIcon"]')
-        // .click()
-        
-        // cy.contains('Удалить предмет')
-        // .click()
-
-        // cy.contains('Удалить папку')
-        // .click()
-
-        // cy.wait('@matchedDeleteSubject').then(({response}) =>{
-        //     expect(response.statusCode).to.eq(200)
-        // })
         
         cy.clickDeleteFolders()
 
         cy.contains('fo').should('not.exist')
-
-
-        // cy.contains('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut ')
-        // .parent()
-        // .parent()
-        // .find('svg[data-testid="MoreVertIcon"]')
-        // .click()
-        
-        // cy.contains('Удалить папку')
-        // .click()
-
-        // cy.contains('Удалить папку')
-        // .click()
-
-        // cy.wait('@matchedDeleteSubject').then(({response}) =>{
-        //     expect(response.statusCode).to.eq(200)
-        // })
         
         cy.contains('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut ').should('not.exist')
     })

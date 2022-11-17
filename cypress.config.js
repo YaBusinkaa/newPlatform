@@ -25,6 +25,8 @@ module.exports = defineConfig({
     audioBlock: 'https://samplelib.com/lib/preview/mp3/sample-3s.mp3',
     videoBlock: 'https://samplelib.com/lib/preview/mp4/sample-5s.mp4',
     textBlock: 'testtetstest',
+    ParentFolder: 'ParentFolder',
+    Folder: 'Folder',
 
 
     demoqaUrl: 'https://demoqa.com/',

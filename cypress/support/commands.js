@@ -3,227 +3,227 @@ import 'cypress-file-upload';
 Cypress.Commands.add('login', () => {                   // Отдельная функция выполнения запроса авторизации
   cy.request({                                    // отправка запроса на API
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/auth/login",  // адрес API из окружения + данные для запроса
+    url: Cypress.env('newPlatformApiUrl') + "/auth/login",  // адрес API из окружения + данные для запроса
     failOnStatusCode: false,
     body: {
       "email": Cypress.env("email"),                   // Логин и пароль берем из окружения
-      "password": Cypress.env("pass")              
+      "password": Cypress.env("pass")
     },
   }).as('login')
-  .its('body')
-  .then((body) => {
-    cy.setCookie("accessToken", body.accessToken)
-    Cypress.env('accessToken', body.accessToken)
-    cy.setCookie("refreshToken", body.refreshToken) 
-    cy.setCookie('user', '{%22id%22:%22775395a6-d2d8-47f0-ab4e-1a55689905cf%22%2C%22userRole%22:%22teacher%22%2C%22email%22:%22ivan@fexbox.org%22%2C%22firstName%22:%22Ivan%22%2C%22lastName%22:%22Inanov%22%2C%22middleName%22:%22Ivanovich%22%2C%22avatarUrl%22:null}')      // Заносим Token в localestorage
-  })
+    .its('body')
+    .then((body) => {
+      cy.setCookie("accessToken", body.accessToken)
+      Cypress.env('accessToken', body.accessToken)
+      cy.setCookie("refreshToken", body.refreshToken)
+      cy.setCookie('user', '{%22id%22:%22775395a6-d2d8-47f0-ab4e-1a55689905cf%22%2C%22userRole%22:%22teacher%22%2C%22email%22:%22ivan@fexbox.org%22%2C%22firstName%22:%22Ivan%22%2C%22lastName%22:%22Inanov%22%2C%22middleName%22:%22Ivanovich%22%2C%22avatarUrl%22:null}')      // Заносим Token в localestorage
+    })
 })
 
 Cypress.Commands.add('createSubject', (title, id_subject) => {    // создание предмета
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/subjects", 
+    url: Cypress.env('newPlatformApiUrl') + "/subjects",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "title": title
     },
   }).as('createSubject')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_subject, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_subject, response.body.id)
+    })
 })
 
 
 Cypress.Commands.add('createGroup', (title, id_subject, id_group) => {    // создание группы
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/groups", 
+    url: Cypress.env('newPlatformApiUrl') + "/groups",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "title": title,
       "subjectId": Cypress.env(id_subject)
     },
   }).as('createGroup')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_group, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_group, response.body.id)
+    })
 })
 
-Cypress.Commands.add('visitGroup', (id_subject,id_group) => {    // зайти на страницу группы
-  cy.visit(Cypress.env('newPlatformUrl')+'/subject/'+Cypress.env(id_subject)+'/group/'+Cypress.env(id_group))
+Cypress.Commands.add('visitGroup', (id_subject, id_group) => {    // зайти на страницу группы
+  cy.visit(Cypress.env('newPlatformUrl') + '/subject/' + Cypress.env(id_subject) + '/group/' + Cypress.env(id_group))
 })
 
 Cypress.Commands.add('deleteSubject', (id_subject) => {    // удаление предмета
-  cy.request({ 
+  cy.request({
     method: 'DELETE',
-    url: Cypress.env('newPlatformApiUrl')+"/subjects/"+Cypress.env(id_subject), 
+    url: Cypress.env('newPlatformApiUrl') + "/subjects/" + Cypress.env(id_subject),
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
   }).as('deleteSubject')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-    expect(response.body.message).to.eq('Предмет успешно удалён')
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.body.message).to.eq('Предмет успешно удалён')
+    })
 })
 
 
 Cypress.Commands.add('deleteGroup', (id_group) => {    // создание группы
-  cy.request({ 
+  cy.request({
     method: 'DELETE',
-    url: Cypress.env('newPlatformApiUrl')+"/groups/"+Cypress.env(id_group), 
+    url: Cypress.env('newPlatformApiUrl') + "/groups/" + Cypress.env(id_group),
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
 
   }).as('deleteGroup')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-    expect(response.body.message).to.eq('Группа успешно удалена')
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.body.message).to.eq('Группа успешно удалена')
+    })
 })
 
 
 Cypress.Commands.add('tempMailId', (email) => {    // Получение id письма на временной почте
-  cy.request({ 
+  cy.request({
     method: 'GET',
-    url: 'https://tempmail.plus/api/mails?email='+email+'&limit=20&epin=', 
+    url: 'https://tempmail.plus/api/mails?email=' + email + '&limit=20&epin=',
     failOnStatusCode: false,
   }).as('tempMail#1')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-    Cypress.env('first_id',response.body.first_id)
-    for (let i = 0; i < response.body.mail_list.length; i++){
-      if(response.body.mail_list[i].subject == "Вас зарегистрировал преподаватель на платформе!"){
-        Cypress.env('mail_id', response.body.mail_list[i].mail_id)
+    .then((response) => {
+      expect(response.status).to.eq(200)
+      Cypress.env('first_id', response.body.first_id)
+      for (let i = 0; i < response.body.mail_list.length; i++) {
+        if (response.body.mail_list[i].subject == "Вас зарегистрировал преподаватель на платформе!") {
+          Cypress.env('mail_id', response.body.mail_list[i].mail_id)
+        }
       }
-    }
-  })
+    })
 })
 
 Cypress.Commands.add('tempMailCode', () => {    // Открытие письма
-  cy.request({ 
+  cy.request({
     method: 'GET',
-    url: 'https://tempmail.plus/api/mails/'+Cypress.env('mail_id')+'?email='+Cypress.env('addStudentMail')+'&epin=',
+    url: 'https://tempmail.plus/api/mails/' + Cypress.env('mail_id') + '?email=' + Cypress.env('addStudentMail') + '&epin=',
     failOnStatusCode: false,
   }).as('tempMail#2')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-    Cypress.env('passwordStudent', response.body.text.split('Пароль: ')[1])
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+      Cypress.env('passwordStudent', response.body.text.split('Пароль: ')[1])
+    })
 })
 
 Cypress.Commands.add('deleteTempMails', (email) => {    // удаление писем
-  cy.request({ 
+  cy.request({
     method: 'DELETE',
-    url: 'https://tempmail.plus/api/mails/?email='+email+'&first_id='+Cypress.env('first_id')+'&epin:',
+    url: 'https://tempmail.plus/api/mails/?email=' + email + '&first_id=' + Cypress.env('first_id') + '&epin:',
     failOnStatusCode: false,
   }).as('deleteTempMails')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+    })
 })
 
 
 Cypress.Commands.add('loginNewStudent', () => { // Отдельная функция выполнения запроса авторизации
   cy.request({                                    // отправка запроса на API
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/auth/login",  // адрес API из окружения + данные для запроса
+    url: Cypress.env('newPlatformApiUrl') + "/auth/login",  // адрес API из окружения + данные для запроса
     failOnStatusCode: false,
     body: {
       "email": Cypress.env("addStudentMail"),                   // Логин и пароль берем из окружения
-      "password": Cypress.env("passwordStudent")              
+      "password": Cypress.env("passwordStudent")
     },
   }).as('loginNewStudent')
-  .then((response)=>{
-    expect(response.status).to.eq(201)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+    })
 })
 
 Cypress.Commands.add('deleteAfterSubject', (id_subject) => {    // удаление предмета
-  cy.request({ 
+  cy.request({
     method: 'DELETE',
-    url: Cypress.env('newPlatformApiUrl')+"/subjects/"+Cypress.env(id_subject), 
+    url: Cypress.env('newPlatformApiUrl') + "/subjects/" + Cypress.env(id_subject),
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
   }).as('deleteSubject')
 })
 
 Cypress.Commands.add('getMySubjects', (title) => {    // получение всех предметов
-  cy.request({ 
+  cy.request({
     method: 'GET',
-    url: Cypress.env('newPlatformApiUrl')+"/subjects", 
+    url: Cypress.env('newPlatformApiUrl') + "/subjects",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
   }).as('getMySubjects')
-  .then((response) =>{
-    for (let i = 0; i < response.body.length; i++) {
-      if (response.body[i].title == title){
-        Cypress.env('id_subject', response.body[i].id)
-        break
+    .then((response) => {
+      for (let i = 0; i < response.body.length; i++) {
+        if (response.body[i].title == title) {
+          Cypress.env('id_subject', response.body[i].id)
+          break
+        }
       }
-    }
-  })
+    })
 })
 
 Cypress.Commands.add('getUser', (email) => {    // получение всех пользователей
-  cy.request({ 
+  cy.request({
     method: 'GET',
-    url: Cypress.env('newPlatformApiUrl')+"/users", 
+    url: Cypress.env('newPlatformApiUrl') + "/users",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
   }).as('getUser')
-  .then((response) =>{
-    for (let i = 0; i < response.body.length; i++) {
-      if (response.body[i].email == email){
-        Cypress.env('id_user', response.body[i].id)
-        break
+    .then((response) => {
+      for (let i = 0; i < response.body.length; i++) {
+        if (response.body[i].email == email) {
+          Cypress.env('id_user', response.body[i].id)
+          break
+        }
       }
-    }
-  })
+    })
 })
 
 Cypress.Commands.add('createStudent', (email, id_group) => {    // создание студента
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/groups/user",
+    url: Cypress.env('newPlatformApiUrl') + "/groups/user",
     failOnStatusCode: false,
-    body:{
+    body: {
       "userEmail": email,
       "groupId": Cypress.env(id_group)
     },
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
   }).as('createStudent')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env('id_student', response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env('id_student', response.body.id)
+    })
 })
 
 Cypress.Commands.add('createUser', (email) => {    // создание учителя
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/users", 
+    url: Cypress.env('newPlatformApiUrl') + "/users",
     failOnStatusCode: false,
-    body:{
+    body: {
       "email": email,
       "userRole": "teacher",
       "firstName": "test",
@@ -232,228 +232,306 @@ Cypress.Commands.add('createUser', (email) => {    // создание учит�
       "password": "testtest"
     },
   }).as('createUser')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env('id_user', response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env('id_user', response.body.id)
+    })
 })
 
 Cypress.Commands.add('deleteUser', () => {    // удаление юзера
-  cy.request({ 
+  cy.request({
     method: 'DELETE',
-    url: Cypress.env('newPlatformApiUrl')+"/users/"+Cypress.env('id_user'), 
+    url: Cypress.env('newPlatformApiUrl') + "/users/" + Cypress.env('id_user'),
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
   }).as('deleteUser')
 })
 
 
 Cypress.Commands.add('tempMailRecoveryId', (email) => {
-  cy.request({ 
+  cy.request({
     method: 'GET',
-    url: 'https://tempmail.plus/api/mails?email='+email+'&limit=20&epin=', 
+    url: 'https://tempmail.plus/api/mails?email=' + email + '&limit=20&epin=',
     failOnStatusCode: false,
   }).as('tempMail#1')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-    expect(response.body.mail_list[0].subject).to.eq("Восстановление пароля")
-    Cypress.env('mail_id', response.body.mail_list[0].mail_id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.body.mail_list[0].subject).to.eq("Восстановление пароля")
+      Cypress.env('mail_id', response.body.mail_list[0].mail_id)
+    })
 })
 
 Cypress.Commands.add('tempMailRecoveryCode', (email) => {
-  cy.request({ 
+  cy.request({
     method: 'GET',
-    url: 'https://tempmail.plus/api/mails/'+Cypress.env('mail_id')+'?email='+email+'&epin=',
+    url: 'https://tempmail.plus/api/mails/' + Cypress.env('mail_id') + '?email=' + email + '&epin=',
     failOnStatusCode: false,
   }).as('tempMail#2')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-    Cypress.env('updatePassUrl', response.body.text.split('( ')[1].split(' )')[0])
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+      Cypress.env('updatePassUrl', response.body.text.split('( ')[1].split(' )')[0])
+    })
 })
 
 Cypress.Commands.add('createLesson', (title, id_group, id_lesson) => {    // Создание урока
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/lessons", 
+    url: Cypress.env('newPlatformApiUrl') + "/lessons",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "groupId": Cypress.env(id_group),
       "title": title,
       "lessonTimestamp": "2025-11-19T09:07:25.028Z"
     }
   }).as('createLesson')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_lesson, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_lesson, response.body.id)
+    })
 })
 
 Cypress.Commands.add('deleteLesson', (id_lesson) => {    // удаление урока
-  cy.request({ 
+  cy.request({
     method: 'DELETE',
-    url: Cypress.env('newPlatformApiUrl')+"/lessons/"+Cypress.env(id_lesson), 
+    url: Cypress.env('newPlatformApiUrl') + "/lessons/" + Cypress.env(id_lesson),
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
   }).as('deleteLesson')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+    })
 })
 
 Cypress.Commands.add('createTask', (title, id_lesson, id_task) => {    // Создание задания
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/tasks",
+    url: Cypress.env('newPlatformApiUrl') + "/tasks",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "type": "classwork",
       "isVisible": true,
       "title": title,
-      "studentId":null,
+      "studentId": null,
       "lessonId": Cypress.env(id_lesson),
     }
   }).as('createTask')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_task, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_task, response.body.id)
+    })
 })
 
 Cypress.Commands.add('createHomeworkTask', (title, id_lesson, id_task) => {    // Создание домашнего задания
   cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/lessons/"+Cypress.env(id_lesson)+"/task",
+    url: Cypress.env('newPlatformApiUrl') + "/lessons/" + Cypress.env(id_lesson) + "/task",
     failOnStatusCode: false,
     headers: {
-      'Authorization': 'Bearer '+ Cypress.env('accessToken'),
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
     },
-    body:{
+    body: {
       title: title,
       type: "homework"
     }
   }).as('createTask')
-      .then((response) =>{
-        expect(response.status).to.eq(201)
-        Cypress.env(id_task, response.body.id)
-      })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_task, response.body.id)
+    })
 })
 
-Cypress.Commands.add('createParentFolder', ( id_parentFolder) => {    // Создание папки
-  cy.request({ 
+Cypress.Commands.add('createParentFolder', (title, id_parentFolder) => {    // Создание папки
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/folders",
+    url: Cypress.env('newPlatformApiUrl') + "/folders",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
-        "title": "ParentFolder"
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
+      "title": title
     }
   }).as('createParentFolder')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_parentFolder, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_parentFolder, response.body.id)
+    })
+})
+
+Cypress.Commands.add('createFolder', (title, id_folder, id_parentFolder) => {    // Создание подпапки
+  cy.request({
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl') + "/folders",
+    failOnStatusCode: false,
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
+      "title": title,
+      "parentId": Cypress.env(id_parentFolder)
+    }
+  }).as('createFolder')
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_folder, response.body.id)
+    })
 })
 
 Cypress.Commands.add('deleteParentFolder', (id_parentFolder) => {    // Удаление папки
-  cy.request({ 
+  cy.request({
     method: 'DELETE',
-    url: Cypress.env('newPlatformApiUrl')+"/folders/"+Cypress.env(id_parentFolder), 
+    url: Cypress.env('newPlatformApiUrl') + "/folders/" + Cypress.env(id_parentFolder),
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
   }).as('deleteParentFolder')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+    })
 })
 
-Cypress.Commands.add('clickDeleteFolders', () => {
+Cypress.Commands.add('deleteFolder', (id_folder) => {    // Удаление подпапки
+  cy.request({
+    method: 'DELETE',
+    url: Cypress.env('newPlatformApiUrl') + "/folders/" + Cypress.env(id_folder),
+    failOnStatusCode: false,
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+  }).as('deleteFolder')
+    .then((response) => {
+      expect(response.status).to.eq(200)
+    })
+})
+
+Cypress.Commands.add('createForTemplateLesson', (title, id_lessonForTemplate) => {    // Создание шаблона для шаблона урока..)0) 
+  cy.request({
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl') + "/lessons?template=true",
+    failOnStatusCode: false,
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
+      "title": title,
+      "lessonTimestamp": "2023-11-19T09:07:25.028Z"
+    }
+  }).as('createForTemplateLesson')
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_lessonForTemplate, response.body.id)
+    })
+})
+
+Cypress.Commands.add('createTemplateLesson', (title, id_folder, id_lessonForTemplate, id_templateLesson) => {    // Создание шаблона урока
+  cy.request({
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl') + "/material-templates",
+    failOnStatusCode: false,
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
+      "title": title,
+      "parentId": Cypress.env(id_folder),
+      "copyId": Cypress.env(id_lessonForTemplate),
+      "type": "lesson"
+    }
+  }).as('createTemplateLesson')
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_templateLesson, response.body.id)
+    })
+})
+
+Cypress.Commands.add('clickDeleteFolders', () => {        //нажатие на кнопку удаления папок
+
+  cy.intercept({
+            method: 'DELETE',
+            url: '**/folders/**',
+          }).as('matchedDeleteFolders') 
 
   cy.contains('Создание папки')
-  .parents('div[role="dialog"]')
-  .find('svg[data-testid="CloseIcon"]')
-  .click()
+    .parents('div[role="dialog"]')
+    .find('svg[data-testid="CloseIcon"]')
+    .click()
 
-  cy.get('p')
-        .contains('Папка 2')
-        .click()
-        cy.wait(1000)
+  cy.contains('Папка 2')
+    .click()
 
   cy.contains('fo')
-  .parent()
-  .parent()
-  .find('svg[data-testid="MoreVertIcon"]')
-  .click()
-  
-  cy.get('ul>li:last-child')
-  .find('Удалить папку')
-  .click()
+    .parent()
+    .parent()
+    .find('[aria-haspopup="menu"]')
+    .click()
+    .then(($menu) => {
+      let a = $menu.attr('aria-controls')
+      cy.get('div[id="' + a + '"]')
+        .contains('Удалить папку')
+        .click()
+    });
+  cy.get('button[type="submit"]')
+    .click()
 
-  cy.contains('Удалить папку')
-  .click()
-
-  cy.wait('@matchedDeleteSubject').then(({response}) =>{
+  cy.wait('@matchedDeleteFolders').then(({response}) =>{
       expect(response.statusCode).to.eq(200)
   })
-  
-  
 
-  cy.contains('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut ')
-  .parent()
-  .parent()
-  .find('svg[data-testid="MoreVertIcon"]')
-  .click()
-  
-  cy.get('ul[role="menu"]')
-  .find('Удалить папку')
-  .click()
 
-  cy.contains('Удалить папку')
-  .click()
+  cy.contains('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut')
+    .parent()
+    .parent()
+    .find('[aria-haspopup="menu"]')
+    .click()
+    .then(($menu) => {
+      let a = $menu.attr('aria-controls')
+      cy.get('div[id="' + a + '"]')
+        .contains('Удалить папку')
+        .click()
+    });
 
-  cy.wait('@matchedDeleteSubject').then(({response}) =>{
+  cy.get('button[type="submit"]')
+    .click()
+
+  cy.wait('@matchedDeleteFolders').then(({response}) =>{
       expect(response.statusCode).to.eq(200)
   })
 })
 
 Cypress.Commands.add('deleteTask', (id_task, id_lesson) => {    // удаление задания
-  cy.request({ 
+  cy.request({
     method: 'DELETE',
-    url: Cypress.env('newPlatformApiUrl')+"/lessons/"+Cypress.env(id_lesson)+"/task/"+Cypress.env(id_task), 
+    url: Cypress.env('newPlatformApiUrl') + "/lessons/" + Cypress.env(id_lesson) + "/task/" + Cypress.env(id_task),
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      }
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    }
   }).as('deleteTask')
-  .then((response) =>{
-    expect(response.status).to.eq(200)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(200)
+    })
 })
 
 Cypress.Commands.add('createBlockImage', (title, id_task, id_block) => {    // Создание блока изображения
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/tasks/"+Cypress.env(id_task)+"/block/image", 
+    url: Cypress.env('newPlatformApiUrl') + "/tasks/" + Cypress.env(id_task) + "/block/image",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "src": Cypress.env('imageBlock'),
       "title": title,
       "isCopyrightHolder": true,
@@ -464,21 +542,21 @@ Cypress.Commands.add('createBlockImage', (title, id_task, id_block) => {    // �
       "isVisible": true
     }
   }).as('createBlockImage')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_block, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_block, response.body.id)
+    })
 })
 
 Cypress.Commands.add('createBlockVideo', (title, id_task, id_block) => {    // Создание видео блока
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/tasks/"+Cypress.env(id_task)+"/block/video", 
+    url: Cypress.env('newPlatformApiUrl') + "/tasks/" + Cypress.env(id_task) + "/block/video",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "transcript": "transcript",
       "copyrightUrl": Cypress.env('videoBlock'),
       "src": Cypress.env('videoBlock'),
@@ -502,21 +580,21 @@ Cypress.Commands.add('createBlockVideo', (title, id_task, id_block) => {    // �
       ]
     }
   }).as('createBlockVideo')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_block, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_block, response.body.id)
+    })
 })
 
 Cypress.Commands.add('createBlockText', (title, id_task, id_block) => {    // Создание текстового блока
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/tasks/"+Cypress.env(id_task)+"/block/text", 
+    url: Cypress.env('newPlatformApiUrl') + "/tasks/" + Cypress.env(id_task) + "/block/text",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "text": Cypress.env('textBlock'),
       "title": title,
       "isCopyrightHolder": true,
@@ -525,42 +603,42 @@ Cypress.Commands.add('createBlockText', (title, id_task, id_block) => {    // С
       "isVisible": true
     }
   }).as('createBlockText')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_block, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_block, response.body.id)
+    })
 })
 
 Cypress.Commands.add('createSlider', (title, id_task) => {    // Создание слайдера
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/block/slider", 
+    url: Cypress.env('newPlatformApiUrl') + "/block/slider",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "title": title,
       "task": "task one",
       "duration": 60,
       "text": "text one"
     }
   }).as('createTask')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_task, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_task, response.body.id)
+    })
 })
 
 Cypress.Commands.add('createExercise', (title, id_task, id_block) => {    // Создание упражнения
-  cy.request({ 
+  cy.request({
     method: 'POST',
-    url: Cypress.env('newPlatformApiUrl')+"/tasks/"+Cypress.env(id_task)+"/block/exercise", 
+    url: Cypress.env('newPlatformApiUrl') + "/tasks/" + Cypress.env(id_task) + "/block/exercise",
     failOnStatusCode: false,
-    headers: { 
-        'Authorization': 'Bearer '+ Cypress.env('accessToken'),       
-      },
-    body:{
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
       "text": "text one",
       "exerciseType": "singleChoice",
       "sliderId": "61fe2e30-0164-4205-a21c-20b1950a7328",
@@ -571,10 +649,10 @@ Cypress.Commands.add('createExercise', (title, id_task, id_block) => {    // С�
       "isVisible": true
     }
   }).as('createBlockText')
-  .then((response) =>{
-    expect(response.status).to.eq(201)
-    Cypress.env(id_block, response.body.id)
-  })
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_block, response.body.id)
+    })
 })
 
 Cypress.Commands.add('uploadFile', { prevSubject: true }, (subject, fixturePath, mimeType) => {
