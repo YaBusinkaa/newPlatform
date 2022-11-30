@@ -5,6 +5,7 @@ describe('Create template lesson', () => {
         cy.login();
         cy.createParentFolder('ParentFolder', 'id_parentFolder');
         cy.createFolder('Folder', 'id_folder', 'id_parentFolder');
+        cy.createForTemplateLesson('LessonForTemplate', 'id_lessonForTemplate');
 
         cy.intercept({
             method: 'GET',
@@ -14,8 +15,8 @@ describe('Create template lesson', () => {
 
         cy.intercept({
             method: 'POST',
-            url: Cypress.env('newPlatformApiUrl') + '/folders',
-        }).as('matchedFolder')
+            url: Cypress.env('newPlatformApiUrl') + '/material-templates',
+        }).as('matchedTemplate')
 
         cy.intercept({
             method: 'DELETE',
@@ -47,10 +48,10 @@ describe('Create template lesson', () => {
                     .contains('Создать шаблон')
                     .click()
             })
-            cy.find('[aria-haspopup="dialog"]')
-            .find('Урока')
+        cy.get('ul>li[role="menuitem"]')
+            .eq(5)
             .click()
-            
+
 
     })
 
@@ -59,17 +60,16 @@ describe('Create template lesson', () => {
         cy.deleteParentFolder('id_parentFolder')
     })
 
-    it('Основной сценарий - 2 символа', () => {
+    it.skip('Основной сценарий - 2 символа', () => {
 
         cy.get('input[name="title"]')
             .type('fo')
             .should('have.value', 'fo')
 
-        cy.get('button')
-            .contains('Создать')
+        cy.get('button[type="submit"]')
             .click()
 
-        cy.wait('@matchedFolder').then(({ response }) => {
+        cy.wait('@matchedTemplate').then(({ response }) => {
             expect(response.statusCode).to.eq(201)
         })
 
@@ -78,64 +78,56 @@ describe('Create template lesson', () => {
 
     })
 
-    it.skip('Альтернативный сценарий - 100 символов', () => {
+    it('Альтернативный сценарий - 100 символов', () => {
 
-        cy.get('input[name="folderTitle"]')
-            .clear()
-            .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut')
-            .should('have.value', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut')
+        cy.get('input[name="title"]')
+            .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh ')
+            .should('have.value', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh ')
 
-        cy.get('button')
-            .contains('Переименовать')
+        cy.get('button[type="submit"]')
             .click()
 
-        cy.wait('@matchedUpdateFolder').then(({ response }) => {
-            expect(response.statusCode).to.eq(200)
+        cy.wait('@matchedTemplate').then(({ response }) => {
+            expect(response.statusCode).to.eq(201)
         })
 
-        cy.contains('Название папки успешно изменено')
+        cy.contains('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh ')
             .should('exist')
     })
 
-    it.skip('Пустые поля', () => {
+    it('Пустые поля', () => {
 
-        cy.get('input[name="folderTitle"]')
-            .clear()
-
-        cy.get('button')
-            .contains('Переименовать')
+        cy.get('button[type="submit"]')
             .click()
 
-        cy.contains('Необходимо задать название папки')
+        cy.contains('Необходимо заполнить поле')
             .should('exist')
     })
 
-    it.skip('Максимальное кол-во символов', () => {
-        cy.get('input[name="folderTitle"]')
-            .clear()
-            .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut ')
-            .should('have.value', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut ')
+    it('Максимальное кол-во символов', () => {
+        cy.get('input[name="title"]')
+            .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh e')
+            .should('have.value', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh e')
 
-        cy.get('button')
-            .contains('Переименовать')
+        cy.get('button[type="submit"]')
             .click()
 
-        cy.contains('Введите не более 100 символов')
+        cy.contains('Введите не менее 1 и не более 80 символов')
             .should('exist')
     })
 
-    it.skip('Повторяющееся название папки', () => {
+    it('Повторяющееся название папки', () => {
 
-        cy.get('input[name="folderTitle"]')
-            .clear()
-            .type('Folder')
-            .should('have.value', 'Folder')
+        cy.createTemplateLesson('TemplateLesson', 'id_folder', 'id_lessonForTemplate', 'id_templateLesson');
 
-        cy.get('button')
-            .contains('Переименовать')
+        cy.get('input[name="title"]')
+            .type('TemplateLesson')
+            .should('have.value', 'TemplateLesson')
+
+        cy.get('button[type="submit"]')
             .click()
 
-        cy.contains('Данное название папки уже имеется')
+        cy.contains('Данное название шаблона уже имеется')
             .should('exist')
 
 

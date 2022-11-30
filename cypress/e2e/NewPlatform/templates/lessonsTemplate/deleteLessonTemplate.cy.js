@@ -1,4 +1,4 @@
-describe('Update template lesson', () => {
+describe('Delete template lesson', () => {
 
 
     beforeEach(() => {
@@ -15,9 +15,9 @@ describe('Update template lesson', () => {
 
 
         cy.intercept({
-            method: 'PUT',
+            method: 'DELETE',
             url: '**/material-templates/**',
-        }).as('matchedTemplateUpdate')
+        }).as('matchedTemplateDelete')
 
         cy.intercept({
             method: 'DELETE',
@@ -52,11 +52,9 @@ describe('Update template lesson', () => {
             .then(($menu) => {
                 let a = $menu.attr('aria-controls')
                 cy.get('div[id="' + a + '"]')
-                    .contains('Редактировать шаблон')
+                    .contains('Удалить шаблон')
                     .click()
-            })     
-
-
+            })  
     })
 
     afterEach(() => {
@@ -64,42 +62,25 @@ describe('Update template lesson', () => {
         cy.deleteParentFolder('id_parentFolder')
     })
 
-    it('Основной сценарий - 2 символа', () => {
+    it('Основной сценарий - удаление шаблона', () => {
 
-        cy.get('input[name="templateTitle"]')
-            .clear()
-            .type('fo')
-            .should('have.value', 'fo')
-
-        cy.get('button')
-            .contains('Переименовать')
+        cy.get('button[type="submit"]')
             .click()
 
-        cy.wait('@matchedTemplateUpdate').then(({ response }) => {
+        cy.wait('@matchedTemplateDelete').then(({ response }) => {
             expect(response.statusCode).to.eq(200)
         })
 
-        cy.contains('Название шаблона успешно изменено')
+        cy.contains('Шаблон успешно удален')
             .should('exist')
     })
 
-    it.skip('Альтернативный сценарий - 100 символов', () => {
+    it('Альтернативный сценарий - отмена удаления', () => {
 
-        cy.get('input[name="templateTitle"]')
-            .clear()
-            .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut')
-            .should('have.value', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut')
-
-        cy.get('button')
-            .contains('Переименовать')
+        cy.get('[data-testid="CloseIcon"]')
             .click()
-
-        cy.wait('@matchedTemplateUpdate').then(({ response }) => {
-            expect(response.statusCode).to.eq(200)
-        })
-
-        cy.contains('Название шаблона успешно изменено')
-            .should('exist')
+        cy.contains('Вы действительно хотите удалить шаблон TemplateLesson?')
+        .should('not.exist')
     })
 
     it.skip('Пустые поля', () => {

@@ -37,6 +37,38 @@ Cypress.Commands.add('createSubject', (title, id_subject) => {    // созда�
     })
 })
 
+Cypress.Commands.add('createSubjectCopy', (title, id_subjectCopy) => {    // создание предмета
+  cy.request({
+    method: 'POST',
+    url: Cypress.env('newPlatformApiUrl') + "/subjects",
+    failOnStatusCode: false,
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+    body: {
+      "title": title
+    },
+  }).as('createSubjectCopy')
+    .then((response) => {
+      expect(response.status).to.eq(201)
+      Cypress.env(id_subjectCopy, response.body.id)
+    })
+})
+
+Cypress.Commands.add('deleteSubjectCopy', (id_subjectCopy) => {    // удаление предмета
+  cy.request({
+    method: 'DELETE',
+    url: Cypress.env('newPlatformApiUrl') + "/subjects/" + Cypress.env(id_subjectCopy),
+    failOnStatusCode: false,
+    headers: {
+      'Authorization': 'Bearer ' + Cypress.env('accessToken'),
+    },
+  }).as('deleteSubjectCopy')
+    .then((response) => {
+      expect(response.status).to.eq(200)
+      expect(response.body.message).to.eq('Предмет успешно удалён')
+    })
+})
 
 Cypress.Commands.add('createGroup', (title, id_subject, id_group) => {    // создание группы
   cy.request({
@@ -61,6 +93,7 @@ Cypress.Commands.add('visitGroup', (id_subject, id_group) => {    // зайти 
   cy.visit(Cypress.env('newPlatformUrl') + '/subject/' + Cypress.env(id_subject) + '/group/' + Cypress.env(id_group))
 })
 
+
 Cypress.Commands.add('deleteSubject', (id_subject) => {    // удаление предмета
   cy.request({
     method: 'DELETE',
@@ -77,7 +110,7 @@ Cypress.Commands.add('deleteSubject', (id_subject) => {    // удаление �
 })
 
 
-Cypress.Commands.add('deleteGroup', (id_group) => {    // создание группы
+Cypress.Commands.add('deleteGroup', (id_group) => {    // удаление группы
   cy.request({
     method: 'DELETE',
     url: Cypress.env('newPlatformApiUrl') + "/groups/" + Cypress.env(id_group),
