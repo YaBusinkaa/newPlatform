@@ -115,14 +115,11 @@ describe('Exercise block testing', () => {
         cy.get('textarea[name="text"]')
             .type('aa')
 
-        cy.get('input[name="answer"]')
+        cy.get('textarea[name="answer"]')
             .eq(0)
             .type('aa')
 
-        cy.contains('добавить')
-            .click()
-
-        cy.get('input[name="answer"]')
+        cy.get('textarea[name="answer"]')
             .eq(1)
             .type('aa')
 
@@ -270,7 +267,7 @@ describe('Exercise block testing', () => {
 
         cy.wait(1000)
 
-        cy.contains('Должно быть заполнено хотя бы одно поле и выбран верный ответ')
+        cy.contains('Необходимо заполнить обязательные поля')
             .should('exist')
 
     })
@@ -300,7 +297,7 @@ describe('Exercise block testing', () => {
 
         cy.wait(1000)
 
-        cy.contains('Должно быть заполнено хотя бы одно поле и выбран верный ответ')
+        cy.contains('Необходимо заполнить обязательные поля')
             .should('exist')
 
     })
@@ -334,7 +331,7 @@ describe('Exercise block testing', () => {
 
     })
 
-    it.skip('Альтернативный сценарий - количество ответов меньше 2 (множественный выбор)', () => {
+    it('Альтернативный сценарий - количество ответов меньше 2 (множественный выбор)', () => {
 
         //добавление задания
     
@@ -350,7 +347,8 @@ describe('Exercise block testing', () => {
         cy.contains('Множественный выбор')
             .click()
 
-        cy.get('input[name="answer"]')
+        cy.get('textarea[name="answer"]')
+            .eq(0)
             .type('aa')
 
         cy.contains('СОХРАНИТЬ')
@@ -372,6 +370,15 @@ describe('Exercise block testing', () => {
         cy.contains('ДАЛЕЕ')
             .click()
 
+        cy.contains('Название упражнения не должно быть менее 2 и более 250 символов')
+            .should('exist')
+        
+        cy.get('input[name="title"]')
+            .type('a')
+        
+            cy.contains('ДАЛЕЕ')
+            .click()
+
         cy.get('input[id="icon-button-file"]')
             .attachFile('testAudio.mp3')
 
@@ -391,7 +398,7 @@ describe('Exercise block testing', () => {
         cy.contains('ДАЛЕЕ')
             .click()
 
-        cy.wait(10000)
+        cy.wait(1000)
 
         cy.contains('Допустимые форматы фото: png/jpg/jpeg')
             .should('exist')
@@ -407,12 +414,12 @@ describe('Exercise block testing', () => {
 
     })
 
-    it.skip('(добавление медиафайла) - неверный формат аудиофайла', () => {
+    it('(добавление медиафайла) - неверный формат аудиофайла', () => {
 
         //добавление задания
     
         cy.get('input[name="title"]')
-            .type('a')
+            .type('aa')
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -446,12 +453,12 @@ describe('Exercise block testing', () => {
 
     })
 
-    it.skip('(добавление медиафайла) - неверный формат видеофайла', () => {
+    it('(добавление медиафайла) - неверный формат видеофайла', () => {
 
         //добавление задания
     
         cy.get('input[name="title"]')
-            .type('a')
+            .type('aa')
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -485,12 +492,12 @@ describe('Exercise block testing', () => {
 
     })
 
-    it.skip('(добавление медиафайла) - недопустимый размер медиафайла', () => {
+    it('(добавление медиафайла) - недопустимый размер медиафайла', () => {
 
         //добавление задания
     
         cy.get('input[name="title"]')
-            .type('a')
+            .type('aa')
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -511,12 +518,12 @@ describe('Exercise block testing', () => {
             .should('exist')
     })
 
-    it.skip('(добавление медиафайла) - недопустимый размер аудиофайла', () => {
+    it('(добавление медиафайла) - недопустимый размер аудиофайла', () => {
 
         //добавление задания
     
         cy.get('input[name="title"]')
-            .type('a')
+            .type('aa')
 
         cy.contains('ДАЛЕЕ')
             .click()
@@ -537,12 +544,12 @@ describe('Exercise block testing', () => {
 
     })
 
-    it.skip('(добавление медиафайла) - недопустимый размер видеофайла ', () => {
+    it('(добавление медиафайла) - недопустимый размер видеофайла ', () => {
 
         //добавление задания
     
         cy.get('input[name="title"]')
-            .type('a')
+            .type('aa')
 
         cy.contains('ДАЛЕЕ')
             .click()

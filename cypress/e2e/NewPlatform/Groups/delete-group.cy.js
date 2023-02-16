@@ -41,6 +41,7 @@ describe('edit-group(mainPage)', () => {
 
         cy.contains('Группа test_group')
         .parent()
+        .parent()
         .find('a')
         .click()
         

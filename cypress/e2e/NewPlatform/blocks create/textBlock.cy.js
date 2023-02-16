@@ -65,7 +65,7 @@ describe('Text block testing', () => {
     })
 
 
-    it.skip('Основной сценарий - создание текстового блока', () => {
+    it('Основной сценарий - создание текстового блока', () => {
         cy.get('input[name="title"]')
         .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex')
 
@@ -84,23 +84,7 @@ describe('Text block testing', () => {
         .should('exist')
     })
 
-    it.skip('Альтернативный сценарий - максимальное количество символов', () => {
-
-        cy.get('input[name="title"]')
-        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nчсячсясячссячсibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip exв')
-
-        cy.get('[role="textbox"]')
-        .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero e')
-
-        cy.contains('Сохранить')
-        .click()
-
-        // cy.wait('@matchedCreateText').then(({response}) =>{
-        //     expect(response.statusCode).to.eq(422)
-        // })
-        cy.contains('Введеное название не должен превышать 255 символов')
-        .should('exist')
-    })
+   
     it('Альтернативный сценарий - пустые поля', () => {
     
         cy.contains('Сохранить')

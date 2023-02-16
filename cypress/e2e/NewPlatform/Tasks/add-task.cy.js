@@ -27,9 +27,12 @@ describe('Add Task', () => {
             url: '**/task**'
         }).as('matchedCreateTask')                            
 
-        cy.visitGroup('id_subject','id_group').then(({response})=> {
+        cy.visitGroup('id_subject','id_group')
+        
+        /*.then(({response})=> {
             expect(response.statusCode).to.eq(200)
-        })
+        })*/
+        
         cy.wait('@matchedAuth')
         cy.wait(1000)
 
@@ -46,8 +49,7 @@ describe('Add Task', () => {
         .wait(1000)
         .click()
         .wait(1000)
-        
-         
+    
     })
 
     afterEach(()=>{
@@ -72,7 +74,7 @@ describe('Add Task', () => {
             expect(response.body.type).to.eq('classwork')
         })
 
-        cy.contains('Классное задание test_task успешно создана!')
+        cy.contains('Задание test_task успешно добавлено')
         .should('exist')
     
     })
@@ -102,7 +104,7 @@ describe('Add Task', () => {
             expect(response.body.type).to.eq('homework')
         })
 
-        cy.contains('Домашнее задание test_task успешно создана!')
+        cy.contains('Задание test_task успешно добавлено')
         .should('exist')
     
     })

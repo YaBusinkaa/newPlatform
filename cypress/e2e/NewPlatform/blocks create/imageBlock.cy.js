@@ -70,7 +70,7 @@ describe('Image block testing', () => {
     })
 
 
-    it.skip('Основной сценарий - создание блока изображения', () => {
+    it('Основной сценарий - создание блока изображения', () => {
    
         cy.get('input[id="icon-button-file"]')
         .attachFile('testImage.jpg')
@@ -93,7 +93,7 @@ describe('Image block testing', () => {
     })
 
 
-    it.skip('Альтернативный сценарий - пустые поля', () => {
+    it('Альтернативный сценарий - пустые поля', () => {
         
         cy.get('button[type="submit"]')
         .click()
@@ -111,7 +111,7 @@ describe('Image block testing', () => {
         .should('exist')
     })
 
-    it.skip('Альтернативный сценарий - неверный формат', () => {
+    it('Альтернативный сценарий - неверный формат', () => {
         
         cy.get('input[id="icon-button-file"]')
         .attachFile('testAudio.mp3')
@@ -121,7 +121,7 @@ describe('Image block testing', () => {
         .should('exist')
     })
 
-    it.skip('Альтернативный сценарий - размер файла превышает допустимый', () => {
+    it('Альтернативный сценарий - размер файла превышает допустимый', () => {
         
         cy.get('input[id="icon-button-file"]')
         .attachFile('bigImage.png')
@@ -131,7 +131,7 @@ describe('Image block testing', () => {
         .should('exist')
     })
 
-    it.skip ('Альтернативный сценарий - минимальное количество символов текстовых полей', () => {
+    it('Альтернативный сценарий - минимальное количество символов текстовых полей', () => {
 
         cy.get('input[id="icon-button-file"]')
             .attachFile('testImage.jpg')
@@ -156,7 +156,7 @@ describe('Image block testing', () => {
             .should('exist')
 
     })
-    it.skip('Альтернативный сценарий - максимальное количество символов текстовых полей', () => {
+    it('Альтернативный сценарий - максимальное количество символов текстовых полей', () => {
 
         cy.get('input[id="icon-button-file"]')
             .attachFile('testImage.jpg')

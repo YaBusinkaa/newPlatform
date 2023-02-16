@@ -68,6 +68,7 @@ describe('Add group', () => {
 
         cy.contains('Группа test_group')
         .parent()
+        .parent()
         .find('a')
         .click()
 

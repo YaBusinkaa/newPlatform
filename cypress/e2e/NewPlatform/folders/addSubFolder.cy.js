@@ -42,7 +42,7 @@ describe('Update folder', () => {
         cy.deleteParentFolder('id_parentFolder')
     })
 
-    it.skip('Основной сценарий - 2 символа', () => {
+    it('Основной сценарий - 2 символа', () => {
 
         cy.get('input[name="folderTitle"]')
         .type('fo')
@@ -61,7 +61,7 @@ describe('Update folder', () => {
 
     })
 
-    it.skip('Альтернативный сценарий - 100 символов', () => {
+    it('Альтернативный сценарий - 100 символов', () => {
 
         cy.get('input[name="folderTitle"]')
         .type('Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut')
@@ -79,7 +79,7 @@ describe('Update folder', () => {
         .should('exist')
     })
 
-    it.skip('Пустые поля', () => {
+    it('Пустые поля', () => {
 
         cy.get('button')
         .contains('Создать папку')
@@ -103,7 +103,7 @@ describe('Update folder', () => {
         .should('exist')
     })
 
-    it.skip('Повторяющееся название папки', () => {
+    it('Повторяющееся название папки', () => {
 
         cy.get('input[name="folderTitle"]')
         .type('fo')
@@ -113,7 +113,7 @@ describe('Update folder', () => {
         .contains('Создать папку')                                                       //нужно фиксить, тут баг
         .click()
     
-        cy.contains('Данное название папки уже имеется')
+        cy.contains('Данное название папки уже занято, введите другое название')
         .should('exist')
 
 

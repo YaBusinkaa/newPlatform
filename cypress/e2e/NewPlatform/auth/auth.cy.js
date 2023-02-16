@@ -38,7 +38,7 @@ describe('Authorization validation testing', () => {
 
     })
 
-    it.skip('Пустые поля', () => {
+    it('Пустые поля', () => {
 
         cy.get('button')
         .contains('Войти')
@@ -51,7 +51,7 @@ describe('Authorization validation testing', () => {
         .should('exist')
     })
 
-    it.skip('Не зарегистрированный email', () => {
+    it('Не зарегистрированный email', () => {
 
         cy.get('input[name="email"]')
         .type('ipst@yan.ru')
@@ -74,7 +74,7 @@ describe('Authorization validation testing', () => {
         .should('exist')
     })
 
-    it.skip('Неверный пароль', () => {
+    it('Неверный пароль', () => {
 
         cy.get('input[name="email"]')
         .type(Cypress.env('email'))
@@ -97,7 +97,7 @@ describe('Authorization validation testing', () => {
         .should('exist')
     })
 
-    it.skip('Невалидные данные', () => {
+    it('Невалидные данные', () => {
 
         cy.get('input[name="email"]')
         .type('еуы@@@@е@gmail.com')
@@ -118,7 +118,7 @@ describe('Authorization validation testing', () => {
         .should('exist')
     })
 
-    it.skip('Невалидные данные (пробел)', () => {
+    it('Невалидные данные (пробел)', () => {
 
         cy.get('input[name="email"]')
         .type('test ipst@gmail.com')
@@ -137,7 +137,7 @@ describe('Authorization validation testing', () => {
 
     })
 
-    it.skip('Минимальное кол-во символов', () => {
+    it('Минимальное кол-во символов', () => {
 
         cy.get('input[name="email"]')
         .type('na@al.cm')
@@ -151,9 +151,7 @@ describe('Authorization validation testing', () => {
         .contains('Войти')
         .click()
 
-        cy.contains('Минимум 9 символов')
-        .should('exist')
-        cy.contains('Минимум 8 символов') 
+        cy.contains('Пароль должен содержать не менее 8 символов')
         .should('exist')
     })
 })

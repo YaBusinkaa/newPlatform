@@ -24,7 +24,7 @@ describe('Subjects creating testing', () => {
         })
 
     })
-    it.skip('Основной сценарий', () => {
+    it('Основной сценарий', () => {
         cy.contains('Создать предмет').wait(500)
         .click()
 
@@ -47,7 +47,7 @@ describe('Subjects creating testing', () => {
         cy.deleteSubject('id_subject')
     })
 
-    it.skip('Пустые поля', () => {
+    it('Пустые поля', () => {
         cy.contains('Создать предмет').wait(500)
         .click()
 
@@ -60,7 +60,7 @@ describe('Subjects creating testing', () => {
 
     })
 
-it.skip('Максимальное количество символов', () => {
+it('Максимальное количество символов', () => {
         cy.contains('Создать предмет').wait(500)
         .click()
 
